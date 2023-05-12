@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<Pizza>
+
+<div class="my-4">
+    <div class="container">
+        <div class="row justify-content-center gap-3">
+            @foreach(var x in Model)
+            {
+                <div class="card col-2 pt-3 position-relative">
+                    <img class="card-img-top" src="~/img/@x.Img" alt="">
+                    <div class="card-body px-0">
+                        <h5 class="card-title">
+                            @x.Nome
+                        </h5>
+                        <p class="card-text pb-4">@x.Descrizione <br>&euro; @x.Prezzo</p>
+                        <div class="d-flex justify-content-around position-absolute w-100" style="bottom: 5px; left: 50%; transform: translate(-50%, 0)">
+                            <a class="btn btn-light border-1 border-dark" style="bottom: 5px;" href="@Url.Action("PizzaDetail", "Pizza", new {id = x.Id})"><i class="fa-solid fa-magnifying-glass"></i></a>
+                            @if (User.IsInRole("ADMIN"))
+                            {
+                                    <a class="btn btn-light border-1 border-dark" style="bottom: 5px;" href="@Url.Action("EditPizza", "Pizza", new {id = x.Id})"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    <form asp-action="DeletePizza" asp-controller="Pizza" asp-route-id="@x.Id">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class=" btn btn-danger border-1 border-dark"><i class="fa-solid fa-minus"></i></button>
+                                    </form>
+                            }
+                            </div>
+                    </div>
+                </div>
+            }
+        </div>
+        @if (User.IsInRole("ADMIN"))
+        {
+            <a class="btn btn-light border-1 border-dark mx-auto d-block w-25" href="@Url.Action("PizzaForm", "Pizza")">Aggiungi una pizza</a>
+        }
+    </div>
+</div>

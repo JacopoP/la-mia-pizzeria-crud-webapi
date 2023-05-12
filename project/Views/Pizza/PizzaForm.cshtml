@@ -1,0 +1,46 @@
+﻿@model PizzaFormModel
+
+<form asp-controller="Pizza" asp-action="@(Model.Id == default ? "CreatePizza" : "UpdatePizza")" asp-route-id="@(Model.Id != default ? Model.Id : null)" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <label for="nome" class="form-label text-light">Nome della pizza</label>
+    <input type="text" class="form-control" asp-for="Nome" id="nome "/>
+    <span asp-validation-for="Nome" class="text-danger d-block"></span>
+    <label for="descrizione" class="form-label text-light">Descrizione della pizza</label>
+    <input type="text" class="form-control" asp-for="Descrizione" id="descrizione" />
+    <span asp-validation-for="Descrizione" class="text-danger d-block"></span>
+    <label for="prezzo" class="form-label text-light">Prezzo della pizza</label>
+    <input type="text" class="form-control" asp-for="Prezzo" id="prezzo"/>
+    <span asp-validation-for="Prezzo" class="text-danger d-block"></span>
+    <label for="img" class="form-label text-light">Immagine della pizza</label>
+    <input type="file" class="form-control" asp-for="Img" id="img" />
+    <span asp-validation-for="Img" class="text-danger d-block"></span>
+    <label for="categorie" class="form-label text-light">Categoria della pizza</label>
+    <select asp-for="CategoryID" class="form-control" id="categorie">
+        <option value=""></option>
+        @foreach (var item in Model.categories)
+        {
+            @if (Model.CategoryID == item.Id)
+            {
+                <option value="@item.Id" selected>@item.Nome</option>
+            }
+            else
+            {
+                <option value="@item.Id">@item.Nome</option>
+            }
+        }
+    </select>
+    @*<select asp-for="IngredientiId"
+            multiple="multiple"
+            size="10"
+            class="form-control mb-2"
+            asp-items="@Model.AllIngrdients">
+    </select>*@
+    <div class="mt-1">
+        @foreach(var ing in Model.AllIngrdients)
+        {
+            <input class="form-check-inline me-1" type="checkbox" value="@ing.Id" name="IngredientiId" id="@ing.Id" checked="@Model.IngredientiId.Contains(ing.Id)" />
+            <label class="form-label text-light" for="@ing.Id">@ing.Nome&nbsp;&nbsp;&nbsp;</label>
+        }
+    </div>
+    <input type="submit" class="btn btn-light mt-3 mx-auto d-block w-auto" value="@(Model.Id == default ? "Salva" : "Aggiorna")"/>
+</form>

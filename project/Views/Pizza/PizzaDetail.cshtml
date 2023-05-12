@@ -1,0 +1,33 @@
+﻿@{
+}
+
+@model Pizza
+
+@if(Model == null)
+{
+    <h1 class="text-light">Nessun risultato trovato</h1>
+}
+else
+{
+    <div class="conatiner text-center text-light">
+        <h1>@Model.Nome</h1>
+        @if(Model.Category != null)
+        {
+            <h2>@Model.Category.Nome</h2>
+        }
+        <img class="w-50 detail_img" src="~/img/@Model.Img" />
+        <p class="mt-3">
+            @if (Model.Ingredienti != null)
+            {
+                foreach (var ingrediente in Model.Ingredienti)
+                {
+                    @(Model.Ingredienti.IndexOf(ingrediente) == 0 ? string.Concat(ingrediente.Nome[0].ToString().ToUpper(), ingrediente.Nome.AsSpan(1)) : ingrediente.Nome)
+                    @(Model.Ingredienti.IndexOf(ingrediente) != Model.Ingredienti.Count() - 1 ? ", " : "")
+                }
+                <br /><br />
+            }
+            @Model.Descrizione
+        </p>
+        <h4 class="pb-4">&euro; @Model.Prezzo</h4>
+    </div>
+}
